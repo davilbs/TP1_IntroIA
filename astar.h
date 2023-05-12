@@ -11,6 +11,5 @@ private:
     std::vector<int> target;
 
     bool qsearch(std::priority_queue<Node>, Node);
-    int findCost(int, int, int);
     int calcHeur(std::vector<int>);
 };
