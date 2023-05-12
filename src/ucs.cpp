@@ -54,12 +54,11 @@ Node UCSalgo::findSolution()
     while (!frontier.empty())
     {
         Node sol = frontier.top();
+        Node *solp = this->makeSolp(sol);
+        this->solution.push_back(solp);
         frontier.pop();
         if (this->testGoal(sol.state))
-        {
-            this->solution.push_back(&sol);
             return sol;
-        }
 
         if (explored.find(std::make_tuple(sol.state, sol.cost)) == explored.end())
             explored.insert(std::make_tuple(sol.state, sol.cost));
@@ -68,7 +67,7 @@ Node UCSalgo::findSolution()
         for (auto &act : this->findActions(sol.state))
         {
             Node child;
-            child.parent = &sol;
+            child.parent = solp;
             child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
             child.cost = this->calcCost(sol.cost, std::get<0>(act), std::get<1>(act));
             bool inque = this->qsearch(frontier, child);

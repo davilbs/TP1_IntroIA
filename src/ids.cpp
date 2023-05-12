@@ -10,6 +10,8 @@ Node IDSalgo::depthLimited(int cutoff)
     while (!frontier.empty())
     {
         Node sol = frontier.back();
+        Node *solp = this->makeSolp(sol);
+        this->solution.push_back(solp);
         frontier.pop_back();
         this->expnodes++;
         if (this->testGoal(sol.state))
@@ -22,7 +24,7 @@ Node IDSalgo::depthLimited(int cutoff)
             for (auto &act : this->findActions(sol.state))
             {
                 Node child;
-                child.parent = &sol;
+                child.parent = solp;
                 child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
                 child.cost = this->calcCost(sol.cost, std::get<0>(act), std::get<1>(act));
                 frontier.push_back(child);

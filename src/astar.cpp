@@ -43,11 +43,10 @@ Node AStaralgo::findSolution()
     while (!frontier.empty())
     {
         Node sol = frontier.top();
+        Node *solp = this->makeSolp(sol);
+        this->solution.push_back(solp);
         if (this->testGoal(sol.state))
-        {
-            this->solution.push_back(&sol);
             return sol;
-        }
         frontier.pop();
         if (explored.find(std::make_tuple(sol.state, sol.cost)) == explored.end())
             explored.insert(std::make_tuple(sol.state, sol.cost));
@@ -55,7 +54,7 @@ Node AStaralgo::findSolution()
         for (auto &act : this->findActions(sol.state))
         {
             Node child;
-            child.parent = &sol;
+            child.parent = solp;
             child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
             child.h = this->calcHeur(child.state);
             child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));

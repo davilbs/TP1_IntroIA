@@ -29,9 +29,10 @@ bool BFSalgo::esearch(std::vector<Node> explored, Node b)
 Node BFSalgo::findSolution()
 {
     Node sol = this->root;
+    Node *solp = this->makeSolp(sol);
+    this->solution.push_back(solp);
     if (this->testGoal(sol.state))
     {
-        this->solution.push_back(&sol);
         return sol;
     }
     std::deque<Node> frontier;
@@ -40,6 +41,7 @@ Node BFSalgo::findSolution()
     while (!frontier.empty())
     {
         sol = frontier.front();
+        solp = this->makeSolp(sol);
         frontier.pop_front();
         if (!this->esearch(explored, sol))
             explored.push_back(sol);
@@ -47,16 +49,15 @@ Node BFSalgo::findSolution()
         for (auto &act : this->findActions(sol.state))
         {
             Node child;
-            child.parent = &sol;
+            child.parent = solp;
             child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
             child.cost = this->calcCost(sol.cost, std::get<0>(act), std::get<1>(act));
             if (!this->esearch(explored, child) && !this->qsearch(frontier, child))
             {
+                solp = this->makeSolp(child);
+                this->solution.push_back(solp);
                 if (this->testGoal(child.state))
-                {
-                    this->solution.push_back(&child);
                     return child;
-                }
                 frontier.push_back(child);
             }
         }

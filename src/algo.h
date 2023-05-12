@@ -40,6 +40,7 @@ protected:
     std::vector<int> findState(int, int, std::vector<int>);
     bool testGoal(std::vector<int>);
     int calcCost(int, int, int);
+    Node *makeSolp(Node);
 };
 
 #endif

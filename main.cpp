@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "bfs.h"
-#include "ucs.h"
-#include "ids.h"
-#include "astar.h"
+#include "src/bfs.h"
+#include "src/ucs.h"
+#include "src/ids.h"
+#include "src/astar.h"
+#include "src/greedy.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,10 +31,13 @@ int main(int argc, char *argv[])
         solver = new AStaralgo(numbers);
         break;
     case 'G':
+        solver = new Greedyalgo(numbers);
+        break;
     default:
         std::cout << "Algorithm " << label << " not implemented!" << std::endl;
         exit(1);
     }
+
     Node sol = solver->findSolution();
     if (!sol.state.empty())
     {
@@ -49,5 +53,6 @@ int main(int argc, char *argv[])
     }
     else
         std::cout << "No solution found" << std::endl;
-    return 0;
+
+    exit(0);
 }

@@ -3,7 +3,7 @@
 Algo::Algo(std::vector<int> numbers)
 {
     this->root = {nullptr, numbers, 0};
-    this->expnodes = 0;
+    this->expnodes = 1;
 }
 
 Node Algo::findSolution()
@@ -52,15 +52,29 @@ bool Algo::testGoal(std::vector<int> state)
 void Algo::getPath()
 {
     Node *curr = this->solution.back();
+    std::deque<std::vector<int>> steps;
     while (curr != nullptr)
     {
-        this->solution.push_back(curr);
+        steps.push_back(curr->state);
         curr = curr->parent;
     }
-    for (int i = this->solution.size() - 1; i > 0; i--)
+    for (;!steps.empty(); steps.pop_back())
     {
-        for (auto &v : this->solution[i]->state)
+        std::vector<int> cstate = steps.back();
+        for (auto &v : cstate)
             std::cout << v << " ";
         std::cout << std::endl;
     }
+}
+
+Node *Algo::makeSolp(Node n)
+{
+    Node *solp = new Node();
+    solp->state = n.state;
+    solp->parent = n.parent;
+    solp->cost = n.cost;
+    solp->cutoff = n.cutoff;
+    solp->g = n.g;
+    solp->h = n.h;
+    return solp;
 }
