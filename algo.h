@@ -4,6 +4,8 @@
 #include <tuple>
 #include <deque>
 #include <set>
+#include <queue>
+#include <algorithm>
 
 #ifndef ALGO
 #define ALGO
@@ -11,7 +13,7 @@ typedef struct Node
 {
     Node *parent;
     std::vector<int> state;
-    int cost;
+    int cost, g, h;
     bool cutoff = false;
 
     bool operator< (const Node &a) const
@@ -37,6 +39,7 @@ protected:
     std::vector<std::tuple<int, int>> findActions(std::vector<int>);
     std::vector<int> findState(int, int, std::vector<int>);
     bool testGoal(std::vector<int>);
+    int calcCost(int, int, int);
 };
 
 #endif

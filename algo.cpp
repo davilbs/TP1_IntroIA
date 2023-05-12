@@ -36,6 +36,11 @@ std::vector<int> Algo::findState(int a, int b, std::vector<int> currstate)
     return newstate;
 }
 
+int Algo::calcCost(int c, int a, int b)
+{
+    return c + ((std::abs(a - b) > 1) ? 4 : 2);
+}
+
 bool Algo::testGoal(std::vector<int> state)
 {
     for (int i = 0; i < state.size() - 1; i++)

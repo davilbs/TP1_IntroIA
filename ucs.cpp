@@ -70,7 +70,7 @@ Node UCSalgo::findSolution()
             Node child;
             child.parent = &sol;
             child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
-            child.cost = sol.cost + 1;
+            child.cost = this->calcCost(sol.cost, std::get<0>(act), std::get<1>(act));
             bool inque = this->qsearch(frontier, child);
             if ((explored.find(std::make_tuple(child.state, child.cost)) == explored.end()) && !inque)
                 frontier.push(child);
