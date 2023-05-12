@@ -6,9 +6,9 @@ Algo::Algo(std::vector<int> numbers)
     this->expnodes = 0;
 }
 
-Node *Algo::findSolution()
+Node Algo::findSolution()
 {
-    return nullptr;
+    return Node();
 }
 
 std::vector<std::tuple<int, int>> Algo::findActions(std::vector<int> state)

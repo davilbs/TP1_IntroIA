@@ -5,11 +5,18 @@
 #include <deque>
 #include <set>
 
+#ifndef ALGO
+#define ALGO
 typedef struct Node
 {
     Node *parent;
     std::vector<int> state;
     int cost;
+
+    bool operator< (const Node &a) const
+    {
+        return cost > a.cost;
+    }
 } Node;
 
 class Algo
@@ -17,9 +24,10 @@ class Algo
 public:
     Algo(std::vector<int>);
 
-    virtual Node *findSolution();
+    virtual Node findSolution();
     int getNodeCount() { return expnodes; };
     void getPath();
+
 protected:
     Node root;
     int expnodes;
@@ -29,3 +37,5 @@ protected:
     std::vector<int> findState(int, int, std::vector<int>);
     bool testGoal(std::vector<int>);
 };
+
+#endif

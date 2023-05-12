@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "bfs.h"
+#include "ucs.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,23 +18,25 @@ int main(int argc, char *argv[])
     case 'B':
         solver = new BFSalgo(numbers);
         break;
+    case 'U':
+        solver = new UCSalgo(numbers);
+        break;
     case 'A':
     case 'I':
-    case 'U':
     case 'G':
     default:
         std::cout << "Algorithm " << label << " not implemented!" << std::endl;
         exit(1);
     }
-    Node *sol = solver->findSolution();
-    if (sol != nullptr)
+    Node sol = solver->findSolution();
+    if (!sol.state.empty())
     {
-        std::cout << sol->cost << " " << solver->getNodeCount() << std::endl;
+        std::cout << sol.cost << " " << solver->getNodeCount() << std::endl;
         if (print)
             solver->getPath();
         else
         {
-            for (auto &v : sol->state)
+            for (auto &v : sol.state)
                 std::cout << v << " ";
             std::cout << std::endl;
         }
