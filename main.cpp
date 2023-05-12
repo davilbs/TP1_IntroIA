@@ -3,6 +3,7 @@
 #include <string>
 #include "bfs.h"
 #include "ucs.h"
+#include "ids.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,8 +22,10 @@ int main(int argc, char *argv[])
     case 'U':
         solver = new UCSalgo(numbers);
         break;
-    case 'A':
     case 'I':
+        solver = new IDSalgo(numbers);
+        break;
+    case 'A':
     case 'G':
     default:
         std::cout << "Algorithm " << label << " not implemented!" << std::endl;

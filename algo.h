@@ -12,6 +12,7 @@ typedef struct Node
     Node *parent;
     std::vector<int> state;
     int cost;
+    bool cutoff = false;
 
     bool operator< (const Node &a) const
     {
