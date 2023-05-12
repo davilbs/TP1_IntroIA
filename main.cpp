@@ -4,6 +4,7 @@
 #include "bfs.h"
 #include "ucs.h"
 #include "ids.h"
+#include "astar.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,8 @@ int main(int argc, char *argv[])
         solver = new IDSalgo(numbers);
         break;
     case 'A':
+        solver = new AStaralgo(numbers);
+        break;
     case 'G':
     default:
         std::cout << "Algorithm " << label << " not implemented!" << std::endl;
