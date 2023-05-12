@@ -1,20 +1,13 @@
-algo.o: algo.cpp
-	gcc -c algo.cpp -o algo.o
+CXXFLAGS=-Isrc
+VPATH=src
+objects = algo.o bfs.o ucs.o ids.o astar.o greedy.o
 
-bfs.o: bfs.cpp
-	gcc -c bfs.cpp -o bfs.o
+all: $(objects)
 
-ucs.o: ucs.cpp
-	gcc -c ucs.cpp -o ucs.o
+$(objects): %.o: %.cpp
 
-ids.o: ids.cpp
-	gcc -c ids.cpp -o ids.o
-
-astar.o: astar.cpp
-	gcc -c astar.cpp -o astar.o
-
-build: algo.o bfs.o ucs.o ids.o astar.o
-	g++ -o TP1 main.cpp algo.o bfs.o ucs.o ids.o astar.o
+build: $(objects)
+	g++ -o TP1 main.cpp $(objects)
 
 clean:
 	rm TP1 *.o
