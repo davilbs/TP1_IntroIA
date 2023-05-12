@@ -63,7 +63,8 @@ Node UCSalgo::findSolution()
 
         if (explored.find(std::make_tuple(sol.state, sol.cost)) == explored.end())
             explored.insert(std::make_tuple(sol.state, sol.cost));
-
+        this->expnodes++;
+        
         for (auto &act : this->findActions(sol.state))
         {
             Node child;
@@ -74,8 +75,6 @@ Node UCSalgo::findSolution()
             if ((explored.find(std::make_tuple(child.state, child.cost)) == explored.end()) && !inque)
                 frontier.push(child);
         }
-        std::cout << "=================================================" << std::endl;
-        this->printfront(frontier);
     }
     return Node();
 }
