@@ -15,6 +15,7 @@ void Algo::freeSolutions()
 {
     for(int i = 0; i < this->solution.size();i++)
         delete(this->solution[i]);
+    this->solution.clear();
 }
 
 Node Algo::findSolution()
