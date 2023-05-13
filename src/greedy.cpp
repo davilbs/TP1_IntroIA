@@ -91,11 +91,11 @@ Node Greedyalgo::findSolution()
                 Node child;
                 child.parent = solp;
                 child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
+                child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
+                child.cost = this->calcHeur(child.state);
 
-                if ((explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost))
+                if ((explored.find(child.state) == explored.end()) || (explored[child.state] > child.cost))
                 {
-                    child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
-                    child.cost = this->calcHeur(child.state);
                     if (!this->qsearch(frontier, child))
                         frontier.push(child);
                     else

@@ -9,26 +9,42 @@ bool UCSalgo::qsearch(std::priority_queue<Node> frontier, Node b)
     for (; !frontier_copy.empty(); frontier_copy.pop())
     {
         Node e = frontier_copy.top();
-        if (e.state == b.state)
-        {
-            if (e.cost > b.cost)
-                e = b;
+        if ((e.state == b.state))
             return true;
-        }
     }
     return false;
 }
 
-// Returns true if found a state inserted with lower or equal cost,
-// false otherwise
-bool UCSalgo::esearch(std::vector<Node> explored, Node b)
+std::priority_queue<Node> UCSalgo::updateFrontier(std::priority_queue<Node> oldfrontier, Node b)
 {
-    for (auto &v : explored)
+    std::priority_queue<Node> n_frontier;
+    for (; !oldfrontier.empty(); oldfrontier.pop())
     {
-        if (v.state == b.state)
-            return true;
+        Node e = oldfrontier.top();
+        if ((e.state == b.state) && (e.cost > b.cost))
+        {
+            n_frontier.push(b);
+            break;
+        }
+        else
+            n_frontier.push(e);
     }
-    return false;
+
+    if (n_frontier.size() > oldfrontier.size())
+    {
+        while (!oldfrontier.empty())
+        {
+            n_frontier.push(oldfrontier.top());
+            oldfrontier.pop();
+        }
+        return n_frontier;
+    }
+    while (!n_frontier.empty())
+    {
+        oldfrontier.push(n_frontier.top());
+        n_frontier.pop();
+    }
+    return oldfrontier;
 }
 
 void UCSalgo::printfront(std::priority_queue<Node> frontier)
@@ -59,7 +75,10 @@ Node UCSalgo::findSolution()
         frontier.pop();
 
         if (this->testGoal(sol.state))
+        {
+            this->expnodes++;
             return sol;
+        }
 
         if ((explored.find(sol.state) == explored.end()) || (explored[sol.state] > sol.cost))
         {
@@ -72,10 +91,14 @@ Node UCSalgo::findSolution()
                 child.parent = solp;
                 child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
                 child.cost = this->calcCost(sol.cost, std::get<0>(act), std::get<1>(act));
-                bool inque = this->qsearch(frontier, child);
-                bool inexp = (explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost);
-                if (inexp && !inque)
-                    frontier.push(child);
+
+                if ((explored.find(child.state) == explored.end()) || (explored[child.state] > child.cost))
+                {
+                    if (!this->qsearch(frontier, child))
+                        frontier.push(child);
+                    else
+                        frontier = this->updateFrontier(frontier, child);
+                }
             }
         }
     }

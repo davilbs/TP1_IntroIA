@@ -92,12 +92,12 @@ Node AStaralgo::findSolution()
                 Node child;
                 child.parent = solp;
                 child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
+                child.h = this->calcHeur(child.state);
+                child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
+                child.cost = child.h + child.g;
 
                 if ((explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost))
                 {
-                    child.h = this->calcHeur(child.state);
-                    child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
-                    child.cost = child.h + child.g;
 
                     if (!this->qsearch(frontier, child))
                         frontier.push(child);

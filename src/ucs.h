@@ -11,6 +11,6 @@ public:
 
 private:
     bool qsearch(std::priority_queue<Node>, Node);
-    bool esearch(std::vector<Node>, Node);
+    std::priority_queue<Node> updateFrontier(std::priority_queue<Node>, Node);
     void printfront(std::priority_queue<Node>);
 };
