@@ -3,7 +3,7 @@
 #include <string>
 #include <tuple>
 #include <deque>
-#include <set>
+#include <map>
 #include <queue>
 #include <algorithm>
 
@@ -26,6 +26,7 @@ class Algo
 {
 public:
     Algo(std::vector<int>);
+    ~Algo();
 
     virtual Node findSolution();
     int getNodeCount() { return expnodes; };
@@ -40,6 +41,7 @@ protected:
     std::vector<int> findState(int, int, std::vector<int>);
     bool testGoal(std::vector<int>);
     int calcCost(int, int, int);
+    void freeSolutions();
     Node *makeSolp(Node);
 };
 

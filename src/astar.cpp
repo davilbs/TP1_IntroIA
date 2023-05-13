@@ -1,6 +1,6 @@
 #include "astar.h"
 
-AStaralgo::AStaralgo(std::vector<int> numbers) : Algo(numbers) 
+AStaralgo::AStaralgo(std::vector<int> numbers) : Algo(numbers)
 {
     this->target = numbers;
     std::sort(this->target.begin(), this->target.end());
@@ -12,8 +12,9 @@ AStaralgo::AStaralgo(std::vector<int> numbers) : Algo(numbers)
 int AStaralgo::calcHeur(std::vector<int> state)
 {
     int h = 0;
-    for(int i = 0; i < state.size(); i++)
-        if(this->target[i] != state[i]) h++;
+    for (int i = 0; i < state.size(); i++)
+        if (this->target[i] != state[i])
+            h++;
     return h;
 }
 
@@ -34,34 +35,39 @@ bool AStaralgo::qsearch(std::priority_queue<Node> frontier, Node b)
     return false;
 }
 
-
 Node AStaralgo::findSolution()
 {
     std::priority_queue<Node> frontier;
     frontier.push(this->root);
-    std::set<std::tuple<std::vector<int>, int>> explored;
+    std::map<std::vector<int>, int> explored;
     while (!frontier.empty())
     {
         Node sol = frontier.top();
         Node *solp = this->makeSolp(sol);
         this->solution.push_back(solp);
+        frontier.pop();
+
         if (this->testGoal(sol.state))
             return sol;
-        frontier.pop();
-        if (explored.find(std::make_tuple(sol.state, sol.cost)) == explored.end())
-            explored.insert(std::make_tuple(sol.state, sol.cost));
-        this->expnodes++;
-        for (auto &act : this->findActions(sol.state))
+
+        if ((explored.find(sol.state) == explored.end()) || (explored[sol.state] > sol.cost))
         {
-            Node child;
-            child.parent = solp;
-            child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
-            child.h = this->calcHeur(child.state);
-            child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
-            child.cost = child.h + child.g;
-            bool inque = this->qsearch(frontier, child);
-            if ((explored.find(std::make_tuple(child.state, child.cost)) == explored.end()) && !inque)
-                frontier.push(child);
+            explored[sol.state] = sol.cost;
+            this->expnodes++;
+
+            for (auto &act : this->findActions(sol.state))
+            {
+                Node child;
+                child.parent = solp;
+                child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
+                child.h = this->calcHeur(child.state);
+                child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
+                child.cost = child.h + child.g;
+                bool inque = this->qsearch(frontier, child);
+                bool inexp = (explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost);
+                if (inexp && !inque)
+                    frontier.push(child);
+            }
         }
     }
     return Node();

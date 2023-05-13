@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "src/bfs.h"
 #include "src/ucs.h"
 #include "src/ids.h"
@@ -37,8 +38,11 @@ int main(int argc, char *argv[])
         std::cout << "Algorithm " << label << " not implemented!" << std::endl;
         exit(1);
     }
-
+    // auto start = std::chrono::high_resolution_clock::now();
     Node sol = solver->findSolution();
+    // auto end = std::chrono::high_resolution_clock::now();
+    // auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+    // std::cout << label << ";" << argv[2] << ";" << sol.cost << ";" << solver->getNodeCount() << ";" << elapsed.count() / 1e9 << std::endl;
     if (!sol.state.empty())
     {
         std::cout << sol.cost << " " << solver->getNodeCount() << std::endl;

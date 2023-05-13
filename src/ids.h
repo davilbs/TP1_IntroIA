@@ -1,5 +1,6 @@
 #include "algo.h"
 
+// Implementation of the Iterative Depth Search algorithm
 class IDSalgo : public Algo
 {
 public:

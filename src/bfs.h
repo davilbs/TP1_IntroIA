@@ -1,5 +1,6 @@
 #include "algo.h"
 
+// Implementation of the Breadth First Search algorithm
 class BFSalgo : public Algo
 {
 public:

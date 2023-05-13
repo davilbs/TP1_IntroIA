@@ -32,9 +32,7 @@ Node BFSalgo::findSolution()
     Node *solp = this->makeSolp(sol);
     this->solution.push_back(solp);
     if (this->testGoal(sol.state))
-    {
         return sol;
-    }
     std::deque<Node> frontier;
     frontier.push_back(sol);
     std::vector<Node> explored;

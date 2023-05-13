@@ -3,7 +3,18 @@
 Algo::Algo(std::vector<int> numbers)
 {
     this->root = {nullptr, numbers, 0};
-    this->expnodes = 1;
+    this->expnodes = 0;
+}
+
+Algo::~Algo()
+{
+    this->freeSolutions();
+}
+
+void Algo::freeSolutions()
+{
+    for(int i = 0; i < this->solution.size();i++)
+        delete(this->solution[i]);
 }
 
 Node Algo::findSolution()

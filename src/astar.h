@@ -1,5 +1,6 @@
 #include "algo.h"
 
+// Implementation of the A* Algorithm
 class AStaralgo : public Algo
 {
 public:

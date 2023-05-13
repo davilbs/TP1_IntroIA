@@ -1,6 +1,7 @@
 #include "algo.h"
 #include <queue>
 
+// Implementation of the Uniform Cost Search algorithm
 class UCSalgo : public Algo
 {
 public:

@@ -41,6 +41,7 @@ Node IDSalgo::findSolution()
     do
     {
         result = this->depthLimited(level);
+        this->freeSolutions();
         level++;
     } while (result.cutoff);
     return result;
