@@ -12,9 +12,9 @@
 #define ALGO
 typedef struct Node
 {
-    Node *parent;
+    Node *parent = nullptr;
     std::vector<int> state;
-    int cost, g, h;
+    int cost = 0, g = 0, h = 0;
     bool cutoff = false;
 
     bool operator< (const Node &a) const
