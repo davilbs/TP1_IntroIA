@@ -31,11 +31,14 @@ Node BFSalgo::findSolution()
     Node sol = this->root;
     Node *solp = this->makeSolp(sol);
     this->solution.push_back(solp);
+
     if (this->testGoal(sol.state))
         return sol;
+
     std::deque<Node> frontier;
     frontier.push_back(sol);
     std::set<std::vector<int>> explored;
+    
     while (!frontier.empty())
     {
         sol = frontier.front();
