@@ -34,12 +34,16 @@ bool AStaralgo::qsearch(std::priority_queue<Node> frontier, Node b)
 std::priority_queue<Node> AStaralgo::updateFrontier(std::priority_queue<Node> oldfrontier, Node b)
 {
     std::priority_queue<Node> n_frontier;
-    for (; !oldfrontier.empty(); oldfrontier.pop())
+    for (; !oldfrontier.empty();)
     {
         Node e = oldfrontier.top();
-        if ((e.state == b.state) && (e.cost > b.cost))
+        oldfrontier.pop();
+        if (e.state == b.state)
         {
-            n_frontier.push(b);
+            if(e.cost > b.cost)
+                n_frontier.push(b);
+            else
+                n_frontier.push(e);
             break;
         }
         else
@@ -96,9 +100,8 @@ Node AStaralgo::findSolution()
                 child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
                 child.cost = child.h + child.g;
 
-                if ((explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost))
+                if ((explored.find(child.state) == explored.end()) || (explored[child.state] > child.cost))
                 {
-
                     if (!this->qsearch(frontier, child))
                         frontier.push(child);
                     else

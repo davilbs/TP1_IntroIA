@@ -32,12 +32,16 @@ bool Greedyalgo::qsearch(std::priority_queue<Node> frontier, Node b)
 std::priority_queue<Node> Greedyalgo::updateFrontier(std::priority_queue<Node> oldfrontier, Node b)
 {
     std::priority_queue<Node> n_frontier;
-    for (; !oldfrontier.empty(); oldfrontier.pop())
+    for (; !oldfrontier.empty();)
     {
         Node e = oldfrontier.top();
-        if ((e.state == b.state) && (e.cost > b.cost))
+        oldfrontier.pop();
+        if (e.state == b.state)
         {
-            n_frontier.push(b);
+            if(e.cost > b.cost)
+                n_frontier.push(b);
+            else
+                n_frontier.push(e);
             break;
         }
         else
