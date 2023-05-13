@@ -43,7 +43,7 @@ std::priority_queue<Node> Greedyalgo::updateFrontier(std::priority_queue<Node> o
         else
             n_frontier.push(e);
     }
-    
+
     if (n_frontier.size() > oldfrontier.size())
     {
         while (!oldfrontier.empty())
@@ -77,6 +77,7 @@ Node Greedyalgo::findSolution()
         {
             solp->cost = solp->g;
             sol.cost = sol.g;
+            this->expnodes++;
             return sol;
         }
 

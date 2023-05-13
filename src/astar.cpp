@@ -25,14 +25,42 @@ bool AStaralgo::qsearch(std::priority_queue<Node> frontier, Node b)
     for (; !frontier_copy.empty(); frontier_copy.pop())
     {
         Node e = frontier_copy.top();
-        if (e.state == b.state)
-        {
-            if (e.cost > b.cost)
-                e = b;
+        if ((e.state == b.state))
             return true;
-        }
     }
     return false;
+}
+
+std::priority_queue<Node> AStaralgo::updateFrontier(std::priority_queue<Node> oldfrontier, Node b)
+{
+    std::priority_queue<Node> n_frontier;
+    for (; !oldfrontier.empty(); oldfrontier.pop())
+    {
+        Node e = oldfrontier.top();
+        if ((e.state == b.state) && (e.cost > b.cost))
+        {
+            n_frontier.push(b);
+            break;
+        }
+        else
+            n_frontier.push(e);
+    }
+
+    if (n_frontier.size() > oldfrontier.size())
+    {
+        while (!oldfrontier.empty())
+        {
+            n_frontier.push(oldfrontier.top());
+            oldfrontier.pop();
+        }
+        return n_frontier;
+    }
+    while (!n_frontier.empty())
+    {
+        oldfrontier.push(n_frontier.top());
+        n_frontier.pop();
+    }
+    return oldfrontier;
 }
 
 Node AStaralgo::findSolution()
@@ -40,6 +68,7 @@ Node AStaralgo::findSolution()
     std::priority_queue<Node> frontier;
     frontier.push(this->root);
     std::map<std::vector<int>, int> explored;
+
     while (!frontier.empty())
     {
         Node sol = frontier.top();
@@ -48,7 +77,10 @@ Node AStaralgo::findSolution()
         frontier.pop();
 
         if (this->testGoal(sol.state))
+        {
+            this->expnodes++;
             return sol;
+        }
 
         if ((explored.find(sol.state) == explored.end()) || (explored[sol.state] > sol.cost))
         {
@@ -60,13 +92,18 @@ Node AStaralgo::findSolution()
                 Node child;
                 child.parent = solp;
                 child.state = this->findState(std::get<0>(act), std::get<1>(act), sol.state);
-                child.h = this->calcHeur(child.state);
-                child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
-                child.cost = child.h + child.g;
-                bool inque = this->qsearch(frontier, child);
-                bool inexp = (explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost);
-                if (inexp && !inque)
-                    frontier.push(child);
+
+                if ((explored.find(child.state) == explored.end()) || (explored[child.state] >= child.cost))
+                {
+                    child.h = this->calcHeur(child.state);
+                    child.g = this->calcCost(sol.g, std::get<0>(act), std::get<1>(act));
+                    child.cost = child.h + child.g;
+
+                    if (!this->qsearch(frontier, child))
+                        frontier.push(child);
+                    else
+                        frontier = this->updateFrontier(frontier, child);
+                }
             }
         }
     }
